@@ -1,22 +1,64 @@
-import PersonalData from '../steps/PersonalData/PersonalData.tsx';
-import Preferences from '../steps/Preferences/Preferences.tsx';
-
 export const FORM_STEPS = [
     {
-        component: <PersonalData />,
         title: 'Personal Data',
         values: {
-            firstName: '',
-            lastName: '',
-            email: '',
+            firstName: {
+                name: 'firstName',
+                label: 'First name',
+                inputType: 'input',
+                type: 'string',
+                defaultValue: '',
+            },
+            lastName: {
+                name: 'lastName',
+                label: 'Last name',
+                inputType: 'input',
+                type: 'string',
+                defaultValue: '',
+            },
+            email: {
+                name: 'email',
+                label: 'Email',
+                inputType: 'input',
+                type: 'email',
+                defaultValue: '',
+            },
         },
     },
     {
-        component: <Preferences />,
         title: 'Preferences',
-        value: {
-            plan: 'basic',
-            payment: 'monthly',
+        values: {
+            plan: {
+                name: 'plan',
+                label: 'Plan',
+                inputType: 'select',
+                defaultValue: 'basic',
+                options: [
+                    {
+                        value: 'basic',
+                        label: 'Basic',
+                    },
+                    {
+                        value: 'pro',
+                        label: 'Pro',
+                    },
+                ],
+            },
+            payment: {
+                name: 'payment',
+                inputType: 'select',
+                defaultValue: 'monthly',
+                options: [
+                    {
+                        value: 'monthly',
+                        label: 'Monthly',
+                    },
+                    {
+                        value: 'yearly',
+                        label: 'Yearly',
+                    },
+                ],
+            },
         },
     },
 ];
@@ -25,7 +67,8 @@ export const DEFAULT_FORM_VALUES = {
     firstName: '',
     lastName: '',
     email: '',
-    phone: '',
     plan: 'basic',
     payment: 'monthly',
 };
+
+export type FormValues = typeof DEFAULT_FORM_VALUES;

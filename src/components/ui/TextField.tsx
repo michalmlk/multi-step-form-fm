@@ -1,26 +1,22 @@
-import { Input } from '@mui/base/Input';
+import { ReactElement } from 'react';
+import { Controller, useFormContext, get } from 'react-hook-form';
+import { TextField } from '@mui/material';
 
-import {
-    Controller,
-    useFormContext,
-    get,
-} from 'react-hook-form';
-
-interface TextFieldProps {
+interface SelectProps {
+    label: string;
     name: string;
 }
 
-export const TextFieldCustom = ({ ...props }: TextFieldProps) => {
-    const { control, formState } = useFormContext();
-    const error = get(formState.errors, props.name);
+export function TextFieldCustom({ ...props }: SelectProps): ReactElement {
+    const { formState: { errors }, control } = useFormContext();
+    const error = get(errors, props.name);
 
     return (
-        <Controller
-            {...props}
-            control={control}
-            name={props.name}
-            render={({ field }) => (
-                <Input name={field.name} onChange={field.onChange} value={field.value} />
-            )} />
+        <Controller control={control} name={props.name} render={({ field }) => (
+            <TextField error={error} variant="outlined" name={field.name} onChange={field.onChange}
+                       label={props.label}
+                       value={field.value}
+                       helperText={error && error.message} sx={{ width: '100%' }} />
+        )} />
     );
-};
+}

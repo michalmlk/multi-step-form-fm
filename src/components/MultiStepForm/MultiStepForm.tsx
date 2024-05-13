@@ -2,19 +2,21 @@ import { FunctionComponent, ReactElement, useContext, useMemo } from 'react';
 import StepComponent from './components/StepComponent/StepComponent.tsx';
 import { StyledFormWrapper } from './MultiStepForm.styles.tsx';
 import { DEFAULT_FORM_VALUES, FORM_STEPS } from '../config';
-import * as yup from 'yup';
 import FormStateContext from '../../context';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from '@mui/material';
+import StepContent from '../steps/StepContent/StepContent.tsx';
+import { StyledFormButtons } from '../ui/FormButtons.styles.tsx';
+
+import * as yup from 'yup';
 
 
 const MultiStepForm: FunctionComponent = (): ReactElement => {
 
-    const { currentStep, handleNextStep, handlePreviousStep } = useContext(FormStateContext);
+    const { currentStep, handleNextStep, handlePreviousStep, showSummary } = useContext(FormStateContext);
 
-    const onSubmit = (data): void => {
-        console.log(JSON.stringify(data));
+    const onSubmit = (data: any): void => {
         alert(JSON.stringify(data));
         handleNext();
     };
@@ -34,7 +36,7 @@ const MultiStepForm: FunctionComponent = (): ReactElement => {
     const activeStepValidationSchema = schema[currentStep];
 
     const methods = useForm({
-        shouldUnregister: true,
+        shouldUnregister: false,
         defaultValues: DEFAULT_FORM_VALUES,
         // @ts-ignore
         resolver: yupResolver(activeStepValidationSchema),
@@ -42,40 +44,37 @@ const MultiStepForm: FunctionComponent = (): ReactElement => {
     });
 
     const {
-        handleSubmit, trigger,
+        handleSubmit, trigger, formState: { isSubmitted },
     } = methods;
 
     const handleNext = async (): Promise<void> => {
         const isCurrentStepValid = await trigger();
-        console.log(isCurrentStepValid);
-        if (isCurrentStepValid) {
+
+        if (isCurrentStepValid && currentStep < FORM_STEPS.length - 1) {
             handleNextStep();
         }
     };
 
     const isNextButtonDisabled = useMemo(() => {
         return currentStep === FORM_STEPS.length - 1;
-    }, [currentStep, FORM_STEPS]);
-
-    const getStepContent = (): ReactElement => {
-        return FORM_STEPS[currentStep].component;
-    };
+    }, [currentStep]);
 
     return (
         <StyledFormWrapper>
             <StepComponent />
             <FormProvider {...methods}>
                 <form>
-                    {getStepContent()}
-                    <div>
+                    {<StepContent step={currentStep} />}
+                    {!isSubmitted && <StyledFormButtons currentStep={currentStep}>
                         {currentStep !== FORM_STEPS.length - 1 &&
                             <Button onClick={handleNext} variant="contained"
                                     disabled={isNextButtonDisabled}>Next</Button>}
                         {currentStep === FORM_STEPS.length - 1 &&
-                            <Button onClick={() => handleSubmit(onSubmit)} variant="contained">Submit</Button>}
+                            <Button onClick={handleSubmit(onSubmit)}
+                                    variant="contained">Submit</Button>}
                         {currentStep !== 0 &&
                             <Button onClick={handlePreviousStep} variant="outlined">Previous</Button>}
-                    </div>
+                    </StyledFormButtons>}
                 </form>
             </FormProvider>
         </StyledFormWrapper>
