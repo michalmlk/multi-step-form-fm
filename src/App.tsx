@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import FormStateContext from './context';
-import { DEFAULT_FORM_VALUES } from './components/config';
+import { DEFAULT_FORM_VALUES, FORM_STEPS } from './components/config';
 import MultiStepForm from './components/MultiStepForm/MultiStepForm.tsx';
 
 import './App.css';
@@ -11,20 +11,23 @@ function App() {
     const [currentStep, setCurrentStep] = useState(0);
 
     const handleNextStep = (): void => {
-        if (currentStep < 2) {
-            setCurrentStep((prev) => prev + 1);
-        }
+        setCurrentStep((prev) => prev + 1);
     };
 
     const handlePreviousStep = (): void => {
-        if (currentStep != 0) {
-            setCurrentStep(prev => prev - 1);
-        }
+        setCurrentStep(prev => prev - 1);
     };
 
     return (
         <FormStateContext.Provider
-            value={{ formState, setFormState, handleNextStep, handlePreviousStep, currentStep, setCurrentStep }}>
+            value={{
+                formState,
+                setFormState,
+                handleNextStep,
+                handlePreviousStep,
+                currentStep,
+                setCurrentStep,
+            }}>
             <div className="main">
                 <MultiStepForm />
             </div>

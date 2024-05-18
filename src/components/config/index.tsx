@@ -1,3 +1,5 @@
+import * as yup from 'yup';
+
 export const FORM_STEPS = [
     {
         title: 'Personal Data',
@@ -28,6 +30,13 @@ export const FORM_STEPS = [
     {
         title: 'Preferences',
         values: {
+            username: {
+                name: 'username',
+                label: 'Username',
+                inputType: 'input',
+                type: 'string',
+                defaultValue: '',
+            },
             plan: {
                 name: 'plan',
                 label: 'Plan',
@@ -61,14 +70,53 @@ export const FORM_STEPS = [
             },
         },
     },
+    {
+        title: 'Company',
+        values: {
+            companyName: {
+                name: 'companyName',
+                label: 'Company name',
+                inputType: 'input',
+                type: 'string',
+                defaultValue: '',
+            },
+            companySize: {
+                name: 'companySize',
+                label: 'Company size',
+                inputType: 'input',
+                type: 'number',
+                defaultValue: 1,
+            },
+        },
+    },
 ];
 
 export const DEFAULT_FORM_VALUES = {
     firstName: '',
     lastName: '',
     email: '',
+    username: '',
     plan: 'basic',
     payment: 'monthly',
+    companyName: '',
+    companySize: 1,
 };
 
 export type FormValues = typeof DEFAULT_FORM_VALUES;
+
+export const schema = [
+    yup.object({
+        firstName: yup.string().required('First name is required'),
+        lastName: yup.string().required('Last name is required'),
+        email: yup.string().email().required('Email is required'),
+    }),
+    yup.object({
+        username: yup.string().required('Username is required'),
+        plan: yup.string().required('Plan is required'),
+        payment: yup.string().required('Payment is required'),
+    }),
+    yup.object({
+        companyName: yup.string().required('Company name is required'),
+        companySize: yup.number().required('Company size is required'),
+    }),
+];
