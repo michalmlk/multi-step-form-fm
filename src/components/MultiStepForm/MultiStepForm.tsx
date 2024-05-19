@@ -1,6 +1,6 @@
 import { FunctionComponent, ReactElement, useContext } from 'react';
 import StepComponent from './components/StepComponent/StepComponent.tsx';
-import { StyledFormWrapper } from './MultiStepForm.styles.tsx';
+import { FormFields, StyledFormWrapper } from './MultiStepForm.styles.tsx';
 import { DEFAULT_FORM_VALUES, FORM_STEPS, schema } from '../config';
 import FormStateContext from '../../context';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -44,18 +44,18 @@ const MultiStepForm: FunctionComponent = (): ReactElement => {
         <StyledFormWrapper>
             {!isSubmitSuccessful && <StepComponent />}
             <FormProvider {...methods}>
-                {isValid && isSubmitSuccessful ? <Summary /> : <form>
+                {isValid && isSubmitSuccessful ? <Summary /> : <FormFields>
                     {<StepContent step={currentStep} />}
                     {!isSubmitSuccessful && <StyledFormButtons currentStep={currentStep}>
-                        {currentStep !== FORM_STEPS.length - 1 &&
-                            <Button onClick={handleNext} variant="contained">Next</Button>}
                         {currentStep === FORM_STEPS.length - 1 &&
                             <Button onClick={handleSubmit(onSubmit)}
                                     variant="contained">Submit</Button>}
                         {currentStep !== 0 &&
                             <Button onClick={handlePreviousStep} variant="outlined">Previous</Button>}
+                        {currentStep !== FORM_STEPS.length - 1 &&
+                            <Button onClick={handleNext} variant="contained">Next</Button>}
                     </StyledFormButtons>}
-                </form>}
+                </FormFields>}
             </FormProvider>
         </StyledFormWrapper>
     );

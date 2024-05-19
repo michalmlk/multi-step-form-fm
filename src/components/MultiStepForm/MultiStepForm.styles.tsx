@@ -8,3 +8,7 @@ export const StyledFormWrapper = styled.div`
     align-items: center;
     padding: .25rem;
 `
+
+export const FormFields = styled.form`
+    width: 100%;
+`;

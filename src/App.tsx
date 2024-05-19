@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import FormStateContext from './context';
-import { DEFAULT_FORM_VALUES, FORM_STEPS } from './components/config';
+import { DEFAULT_FORM_VALUES } from './components/config';
 import MultiStepForm from './components/MultiStepForm/MultiStepForm.tsx';
 
 import './App.css';
