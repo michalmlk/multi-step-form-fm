@@ -1,6 +1,42 @@
 import * as yup from 'yup';
 
-export const FORM_STEPS = [
+interface SelectOption {
+    label: string;
+    value: string | number;
+}
+
+interface StepValue {
+    name: string;
+    label: string;
+    inputType: 'input' | 'select';
+    defaultValue: string | number;
+    type?: string;
+    options?: SelectOption[];
+}
+
+interface FormStep {
+    title: string;
+    values: {
+        [key: string]: StepValue
+    };
+}
+
+//remember to adjust default values to your new schema
+export const DEFAULT_FORM_VALUES = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    username: '',
+    plan: 'basic',
+    payment: 'monthly',
+    companyName: '',
+    companySize: 1,
+};
+
+export type FormValues = typeof DEFAULT_FORM_VALUES;
+
+//define your steps here as follows
+export const FORM_STEPS: FormStep[] = [
     {
         title: 'Personal Data',
         values: {
@@ -55,6 +91,7 @@ export const FORM_STEPS = [
             },
             payment: {
                 name: 'payment',
+                label: 'Payment',
                 inputType: 'select',
                 defaultValue: 'monthly',
                 options: [
@@ -91,19 +128,7 @@ export const FORM_STEPS = [
     },
 ];
 
-export const DEFAULT_FORM_VALUES = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    username: '',
-    plan: 'basic',
-    payment: 'monthly',
-    companyName: '',
-    companySize: 1,
-};
-
-export type FormValues = typeof DEFAULT_FORM_VALUES;
-
+//adjust yup validation (each object in array is treated as single step
 export const schema = [
     yup.object({
         firstName: yup.string().required('First name is required'),
