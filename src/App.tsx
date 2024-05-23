@@ -2,6 +2,7 @@ import { useState } from 'react';
 import FormStateContext from './context';
 import { DEFAULT_FORM_VALUES } from './components/config';
 import MultiStepForm from './components/MultiStepForm/MultiStepForm.tsx';
+import SchemaEditor from './components/SchemaEditor/SchemaEditor.tsx';
 
 import './App.css';
 
@@ -18,6 +19,10 @@ function App() {
         setCurrentStep(prev => prev - 1);
     };
 
+    const handleEditorClose = (): void => setIsEditorOpen(false);
+
+    const [isEditorOpen, setIsEditorOpen] = useState(false);
+
     return (
         <FormStateContext.Provider
             value={{
@@ -27,8 +32,12 @@ function App() {
                 handlePreviousStep,
                 currentStep,
                 setCurrentStep,
+                isEditorOpen,
+                setIsEditorOpen,
             }}>
-            <div className="main">
+            {isEditorOpen &&
+                <SchemaEditor onSave={() => console.log('save')} onCancel={handleEditorClose} isOpen={isEditorOpen} />}
+            <div className="main-wrapper">
                 <MultiStepForm />
             </div>
         </FormStateContext.Provider>

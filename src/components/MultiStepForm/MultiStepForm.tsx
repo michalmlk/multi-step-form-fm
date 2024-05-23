@@ -5,15 +5,15 @@ import { DEFAULT_FORM_VALUES, FORM_STEPS, schema } from '../config';
 import FormStateContext from '../../context';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import StepContent from '../steps/StepContent/StepContent.tsx';
 import { StyledFormButtons } from '../ui/FormButtons.styles.tsx';
 import { Summary } from '../ui/Summary.tsx';
-
+import { Settings } from '@mui/icons-material';
 
 const MultiStepForm: FunctionComponent = (): ReactElement => {
 
-    const { currentStep, handleNextStep, handlePreviousStep } = useContext(FormStateContext);
+    const { currentStep, handleNextStep, handlePreviousStep, setIsEditorOpen } = useContext(FormStateContext);
 
     const onSubmit = async (data: any): Promise<void> => {
         alert(JSON.stringify(data));
@@ -55,6 +55,9 @@ const MultiStepForm: FunctionComponent = (): ReactElement => {
                         {currentStep !== FORM_STEPS.length - 1 &&
                             <Button onClick={handleNext} variant="contained">Next</Button>}
                     </StyledFormButtons>}
+                    <IconButton aria-label="settings" color="primary" onClick={() => setIsEditorOpen(true)}>
+                        <Settings />
+                    </IconButton>
                 </FormFields>}
             </FormProvider>
         </StyledFormWrapper>

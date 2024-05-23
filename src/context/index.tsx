@@ -16,6 +16,9 @@ const FormStateContext = createContext({
     },
     handlePreviousStep: () => {
     },
+    isEditorOpen: false,
+    setIsEditorOpen: (isEditorOpen: boolean) => {
+    },
 });
 
 export default FormStateContext;
